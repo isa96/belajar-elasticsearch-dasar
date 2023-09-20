@@ -1,7 +1,7 @@
-{"create" :  {"_index" :  "customers", "_id":  "joko"}}
-{"name" :  "Joko Morro", "register_at": "2023-10-10 00:00:00"}
+{"create" :  {"_index" :  "customers", "_id":  "ccc"}}
+{"name" :  "Ccc Ddd", "register_at": "2023-10-10 00:00:00"}
 {"index" :  {"_index" :  "customers", "_id":  "budi"}}
-{"name" :  "Budi Nugraha", "register_at": "2023-10-10 00:00:00"}
+{"name" :  "Eee Fff", "register_at": "2023-10-10 00:00:00"}
 {"update" :  {"_index" :  "products", "_id":  "1"}}
 {"doc" :  {"price" :  2500}}
 {"create" :  {"_index" :  "customers", "_id":  "spammer"}}

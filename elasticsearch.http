@@ -1,0 +1,1390 @@
+### create index customers
+PUT http://localhost:9200/customers
+
+### create index products
+PUT http://localhost:9200/products
+
+### create index orders
+PUT http://localhost:9200/orders
+
+### show all indices
+GET http://localhost:9200/_cat/indices?v
+
+### delete index customers
+DELETE http://localhost:9200/customers
+
+### delete index products
+DELETE http://localhost:9200/products
+
+### delete index orders
+DELETE http://localhost:9200/orders
+
+### show all indices
+GET http://localhost:9200/_cat/indices?v
+
+### get customers mapping
+GET http://localhost:9200/customers/_mapping
+
+### update customers mapping
+PUT http://localhost:9200/customers/_mapping
+Content-Type: application/json
+
+{
+  "date_detection" : true,
+  "dynamic_date_formats" : [
+    "yyyy-MM-dd HH:mm:ss",
+    "yyyy-MM-dd",
+    "yyyy/MM/dd HH:mm:ss",
+    "yyyy/MM/dd"
+  ]
+}
+
+### update customers mapping
+PUT http://localhost:9200/customers/_mapping
+Content-Type: application/json
+
+{
+  "numeric_detection": true
+}
+
+### get products mapping
+GET http://localhost:9200/products/_mapping
+
+### update products mapping
+PUT http://localhost:9200/products/_mapping
+Content-Type: application/json
+
+{
+  "date_detection" : true,
+  "dynamic_date_formats" : [
+    "yyyy-MM-dd HH:mm:ss",
+    "yyyy-MM-dd",
+    "yyyy/MM/dd HH:mm:ss",
+    "yyyy/MM/dd"
+  ]
+}
+
+### update products mapping
+PUT http://localhost:9200/products/_mapping
+Content-Type: application/json
+
+{
+  "numeric_detection" : true
+}
+
+### get orders mapping
+GET http://localhost:9200/orders/_mapping
+
+### update orders mapping
+PUT http://localhost:9200/orders/_mapping
+Content-Type: application/json
+
+{
+  "date_detection" : true,
+  "dynamic_date_formats" : [
+    "yyyy-MM-dd HH:mm:ss",
+    "yyyy-MM-dd",
+    "yyyy/MM/dd HH:mm:ss",
+    "yyyy/MM/dd"
+  ]
+}
+
+### update orders mapping
+PUT http://localhost:9200/orders/_mapping
+Content-Type: application/json
+
+{
+  "numeric_detection" : true
+}
+
+
+### create new customer
+POST http://localhost:9200/customers/_create/aaa
+Content-Type: application/json
+
+{
+  "name" : "Aaa Bbb Ccc",
+  "register_at" : "2023-10-10 00:00:00"
+}
+
+### get customers mapping
+GET http://localhost:9200/customers/_mapping
+
+### create product 1
+POST http://localhost:9200/products/_create/1
+Content-Type: application/json
+
+{
+  "name" : "Indomie Ayam Bawang",
+  "price" : "2000"
+}
+
+### create product 2
+POST http://localhost:9200/products/_create/2
+Content-Type: application/json
+
+{
+  "name" : "Mie Sedap Soto",
+  "price" : 2000
+}
+
+### get products mapping
+GET http://localhost:9200/products/_mapping
+
+### create order 1
+POST http://localhost:9200/orders/_create/1
+Content-Type: application/json
+
+{
+  "order_date": "2023-09-09 00:00:00",
+  "customer_id": "aaa",
+  "total": "8000",
+  "items": [
+    {
+      "product_id": "1",
+      "price": "2000",
+      "quantity": "2"
+    },
+    {
+      "product_id": "2",
+      "price": "2000",
+      "quantity": "2"
+    }
+  ]
+}
+
+### get orders mapping
+GET http://localhost:9200/orders/_mapping
+
+### get customer aaa
+GET http://localhost:9200/customers/_doc/aaa
+
+### get customer notfound
+GET http://localhost:9200/customers/_doc/salah
+
+### get customer aaa
+GET http://localhost:9200/customers/_source/aaa
+
+### get customer notfound
+GET http://localhost:9200/customers/_source/salah
+
+### check customer aaa
+HEAD http://localhost:9200/customers/_doc/aaa
+
+### check customer notfound
+HEAD http://localhost:9200/customers/_doc/salah
+
+### get products 1 and 2
+GET http://localhost:9200/products/_mget
+Content-Type: application/json
+
+{
+  "ids" : [
+    "1", "2"
+  ]
+}
+
+### get order 1 and customer aaa
+GET http://localhost:9200/_mget
+Content-Type: application/json
+
+{
+  "docs": [
+    {
+      "_id" : "1",
+      "_index": "orders"
+    },
+    {
+      "_id" : "aaa",
+      "_index": "customers"
+    },
+    {
+      "_id" : "3",
+      "_index": "products"
+    }
+  ]
+}
+
+### search all products
+POST http://localhost:9200/products/_search
+
+### search all products page 1
+POST http://localhost:9200/products/_search?size=1&from=0
+
+### search all products page 2
+POST http://localhost:9200/products/_search?size=1&from=1
+
+### search all products sort by price
+POST http://localhost:9200/products/_search?sort=price:asc
+
+### search all products sort by name
+POST http://localhost:9200/products/_search?sort=name:desc
+
+### create product 3
+POST http://localhost:9200/products/_doc/3
+Content-Type: application/json
+
+{
+  "name" : "Pop Mie Rasa Bakso",
+  "price": 2500
+}
+
+### create product 4
+POST http://localhost:9200/products/_doc/4
+Content-Type: application/json
+
+{
+  "name" : "Samsung Galaxy S9+",
+  "price": 10000000
+}
+
+### create product 5
+POST http://localhost:9200/products/_doc/5
+Content-Type: application/json
+
+{
+  "name" : "Acer Predator XXI",
+  "price": 25000000
+}
+
+### get product 5
+GET http://localhost:9200/products/_doc/5
+
+### search all products
+POST http://localhost:9200/products/_search
+
+### update price for product 5
+POST http://localhost:9200/products/_update/5
+Content-Type: application/json
+
+{
+  "doc" : {
+    "price": 30000000
+  }
+}
+
+### insert customer spammer
+POST http://localhost:9200/customers/_create/spammer
+Content-Type: application/json
+
+{
+  "name" : "spammer",
+  "register_at" : "2023-10-10 00:00:00"
+}
+
+### delete customer spammer
+DELETE http://localhost:9200/customers/_doc/spammer
+
+### search customer
+GET http://localhost:9200/customers/_search
+
+### bulk api
+POST http://localhost:9200/_bulk
+Content-Type: application/json
+
+< bulk.json
+
+### create alias customer and order
+POST http://localhost:9200/_aliases
+Content-Type: application/json
+
+{
+  "actions" : [
+    {
+      "add" : {
+        "alias" : "customer",
+        "index" : "customers"
+      }
+    },
+    {
+      "add" : {
+        "alias" : "order",
+        "index" : "orders"
+      }
+    }
+  ]
+}
+
+### get aliases
+GET http://localhost:9200/_aliases
+
+### search customer
+GET http://localhost:9200/customer/_search
+
+### search order
+GET http://localhost:9200/order/_search
+
+### create index orders_v2
+PUT http://localhost:9200/orders_v2
+
+### update orders_v2 mapping
+PUT http://localhost:9200/orders_v2/_mapping
+Content-Type: application/json
+
+{
+  "numeric_detection" : true,
+  "date_detection" : true,
+  "dynamic_date_formats" : [
+    "yyyy-MM-dd HH:mm:ss",
+    "yyyy-MM-dd",
+    "yyyy/MM/dd HH:mm:ss",
+    "yyyy/MM/dd"
+  ]
+}
+
+### reindex from orders to orders_v2
+POST http://localhost:9200/_reindex
+Content-Type: application/json
+
+{
+  "source": {
+    "index": "orders"
+  },
+  "dest": {
+    "index": "orders_v2"
+  }
+}
+
+### search orders
+GET http://localhost:9200/orders/_search
+
+### search orders_v2
+GET http://localhost:9200/orders_v2/_search
+
+### switch alias order from orders to orders_v2
+POST http://localhost:9200/_aliases
+Content-Type: application/json
+
+{
+  "actions" : [
+    {
+      "remove" : {
+        "alias" : "order",
+        "index" : "orders"
+      }
+    },
+    {
+      "add" : {
+        "alias" : "order",
+        "index" : "orders_v2"
+      }
+    }
+  ]
+}
+
+### get aliases
+GET http://localhost:9200/_aliases
+
+### search to order alias
+GET http://localhost:9200/order/_search
+
+### search to products
+GET http://localhost:9200/order/_search
+
+### select total, customer_id, items.product_d from order
+GET http://localhost:9200/order/_search?_source_includes=total,customer_id,items.product_id
+
+### select *, exclude price from products
+GET http://localhost:9200/products/_search?_source_excludes=price
+
+### select total, customer_id from order where _id = 1
+GET http://localhost:9200/order/_doc/1?_source_includes=total,customer_id
+
+### create index customers_v2
+PUT http://localhost:9200/customers_v2
+
+### update mapping customers_v2
+PUT http://localhost:9200/customers_v2/_mapping
+Content-Type: application/json
+
+{
+  "numeric_detection": true,
+  "date_detection": true,
+  "dynamic_date_formats": [
+    "yyyy-MM-dd HH:mm:ss",
+    "yyyy-MM-dd",
+    "yyyy/MM/dd HH:mm:ss",
+    "yyyy/MM/dd"
+  ],
+  "properties": {
+    "username": {
+      "type": "keyword"
+    },
+    "first_name": {
+      "type": "text"
+    },
+    "last_name": {
+      "type": "text"
+    },
+    "email": {
+      "type": "keyword"
+    },
+    "gender": {
+      "type": "keyword"
+    },
+    "birth_date": {
+      "type": "date",
+      "format": "yyyy-MM-dd"
+    }
+  }
+}
+
+### get mapping customers_v2
+GET http://localhost:9200/customers_v2/_mapping
+
+### switch alias customer from customers to customers_v2
+POST http://localhost:9200/_aliases
+Content-Type: application/json
+
+{
+  "actions" : [
+    {
+      "remove" : {
+        "alias" : "customer",
+        "index" : "customers"
+      }
+    },
+    {
+      "add" : {
+        "alias" : "customer",
+        "index" : "customers_v2"
+      }
+    }
+  ]
+}
+
+### get aliases
+GET http://localhost:9200/_aliases
+
+### search customer
+GET http://localhost:9200/customer/_search
+
+### bulk insert customers
+POST http://localhost:9200/_bulk
+Content-Type: application/json
+
+< customers.json
+
+### update customers_v2 mapping
+PUT http://localhost:9200/customers_v2/_mapping
+Content-Type: application/json
+
+{
+  "properties" : {
+    "address" : {
+      "properties" : {
+        "street" : {
+          "type" : "text"
+        },
+        "city" : {
+          "type" : "text"
+        },
+        "province" : {
+          "type" : "text"
+        },
+        "country" : {
+          "type" : "text"
+        },
+        "zip_code" : {
+          "type" : "keyword"
+        }
+      }
+    }
+  }
+}
+
+### insert customers
+POST http://localhost:9200/_bulk
+Content-Type: application/json
+
+< customers-with-addresses.json
+
+### update customers_v2 mapping
+PUT http://localhost:9200/customers_v2/_mapping
+Content-Type: application/json
+
+{
+  "properties": {
+    "hobbies": {
+      "type": "text"
+    },
+    "banks": {
+      "properties": {
+        "name": {
+          "type": "text"
+        },
+        "account_number": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}
+
+### get customers_v2 mapping
+GET http://localhost:9200/customers_v2/_mapping
+
+### bulk index customers_v2
+POST http://localhost:9200/_bulk
+Content-Type: application/json
+
+< customers-with-banks-and-hobbies.json
+
+### search customer
+POST http://localhost:9200/customer/_search
+
+### search customer using match_all
+POST http://localhost:9200/customer/_search
+Content-Type: application/json
+
+{
+  "query" : {
+    "match_all" : {}
+  }
+}
+
+### search customer using match_all
+POST http://localhost:9200/customer/_search
+Content-Type: application/json
+
+{
+  "query" : {
+    "match_all" : {}
+  },
+  "size" : 5,
+  "from" : 0,
+  "sort" : [
+    {
+      "username" : {
+        "order": "desc"
+      }
+    }
+  ]
+}
+
+### search customer where gender = 'Female'
+POST http://localhost:9200/customer/_search
+Content-Type: application/json
+
+{
+  "query" : {
+    "term" : {
+      "gender" : "Female"
+    }
+  },
+  "size" : 5,
+  "from" : 0,
+  "sort" : [
+    {
+      "username" : {
+        "order": "desc"
+      }
+    }
+  ]
+}
+
+### search customer where banks.name = 'BCA'
+POST http://localhost:9200/customer/_search
+Content-Type: application/json
+
+{
+  "query" : {
+    "term" : {
+      "banks.name" : "BCA"
+    }
+  },
+  "size" : 5,
+  "from" : 0,
+  "sort" : [
+    {
+      "username" : {
+        "order": "desc"
+      }
+    }
+  ]
+}
+
+### search customer where banks.name = 'BCA'
+POST http://localhost:9200/customer/_search
+Content-Type: application/json
+
+{
+  "query" : {
+    "match" : {
+      "banks.name" : "BCA"
+    }
+  },
+  "size" : 5,
+  "from" : 0,
+  "sort" : [
+    {
+      "username" : {
+        "order": "desc"
+      }
+    }
+  ]
+}
+
+### banks.name = "BCA" => banks.name = ["bca"]
+### banks.name = "BCA Digital" => banks.name = ["bca", "digital"]
+### email = "AAA@example.COM" => email = ["aaa", "example", "com"]
+
+### search customer where banks.name = 'BCA DIGITAL'
+POST http://localhost:9200/customer/_search
+Content-Type: application/json
+
+{
+  "query" : {
+    "match" : {
+      "banks.name" : {
+        "query" : "BCA DIGITAL",
+        "operator" : "AND"
+      }
+    }
+  },
+  "size" : 5,
+  "from" : 0,
+  "sort" : [
+    {
+      "username" : {
+        "order": "desc"
+      }
+    }
+  ]
+}
+
+### search customer where username IN ('username1', 'username2', 'username3')
+POST http://localhost:9200/customer/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "terms": {
+      "username": [
+        "username1",
+        "username2",
+        "username3"
+      ]
+    }
+  }
+}
+
+### search customer where banks.name IN ('BCA', 'BTN', 'BNI')
+POST http://localhost:9200/customer/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "terms": {
+      "banks.name": [
+        "bca",
+        "btn",
+        "bni"
+      ]
+    }
+  }
+}
+
+### search customer where hobbies = 'gaming' AND banks.name = 'bca'
+POST http://localhost:9200/customer/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "hobbies": "gaming"
+          }
+        },
+        {
+          "match": {
+            "banks.name": {
+              "query" : "bca digital",
+              "operator" : "AND"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+### search customer where hobbies = 'gaming' AND banks.name = 'bca'
+POST http://localhost:9200/customer/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "hobbies": "gaming"
+          }
+        },
+        {
+          "match": {
+            "banks.name": {
+              "query" : "bca digital",
+              "operator" : "AND"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sort" : [
+    {
+      "username" : {
+        "order": "desc"
+      }
+    }
+  ]
+}
+
+### search customer where hobbies != 'gaming' AND banks.name != 'bca digital'
+POST http://localhost:9200/customer/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        {
+          "term": {
+            "hobbies": "gaming"
+          }
+        },
+        {
+          "match": {
+            "banks.name": {
+              "query": "bca digital"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+### search customer where hobbies = 'GAMING' AND (banks.name = 'bca' OR 'banks.name = 'bni)
+POST http://localhost:9200/customer/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "bool": {
+      "must" : [
+        {
+          "term" : {
+            "hobbies" : "gaming"
+          }
+        }
+      ],
+      "should": [
+        {
+          "term": {
+            "banks.name": "bca"
+          }
+        },
+        {
+          "term": {
+            "banks.name": "bni"
+          }
+        }
+      ],
+      "minimum_should_match" : 1
+    }
+  }
+}
+
+### explain score for customer username126
+POST http://localhost:9200/customer/_explain/username126
+Content-Type: application/json
+
+{
+  "query": {
+    "bool": {
+      "must" : [
+        {
+          "term" : {
+            "hobbies" : {
+              "value" : "gaming",
+              "boost" : 0
+            }
+          }
+        }
+      ],
+      "should": [
+        {
+          "term": {
+            "banks.name": "bca"
+          }
+        },
+        {
+          "term": {
+            "banks.name": "bni"
+          }
+        }
+      ],
+      "minimum_should_match" : 1
+    }
+  }
+}
+
+### search customer where (banks.name = 'bca' OR 'banks.name = 'bni)
+POST http://localhost:9200/customer/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "term": {
+            "banks.name": {
+              "value" : "bca",
+              "boost" : 0
+            }
+          }
+        },
+        {
+          "term": {
+            "banks.name": {
+              "value" : "bni",
+              "boost" : 2
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+### update customer mapping
+PUT http://localhost:9200/customer/_mapping
+Content-Type: application/json
+
+{
+  "properties" : {
+    "labels" : {
+      "type": "flattened"
+    }
+  }
+}
+
+### get customer mapping
+GET http://localhost:9200/customer/_mapping
+
+### update customer username1
+POST http://localhost:9200/customer/_update/username1
+Content-Type: application/json
+
+{
+  "doc" : {
+    "labels" : {
+      "priority" : "vip",
+      "discount" : "10% discount",
+      "complaint": "always complaint"
+    }
+  }
+}
+
+### get customer username1
+GET http://localhost:9200/customer/_doc/username1
+
+### update customer username2
+POST http://localhost:9200/customer/_update/username2
+Content-Type: application/json
+
+{
+  "doc" : {
+    "labels" : {
+      "priority" : "regular",
+      "verified" : "unverified",
+      "buy" : "never buy"
+    }
+  }
+}
+
+### get customer username2
+GET http://localhost:9200/customer/_doc/username2
+
+### search vip customer
+POST http://localhost:9200/customer/_search
+Content-Type: application/json
+
+{
+  "query" : {
+    "term" : {
+      "labels": "regular"
+    }
+  }
+}
+
+### search vip and regular customer
+POST http://localhost:9200/customer/_search
+Content-Type: application/json
+
+{
+  "query" : {
+    "bool" : {
+      "should" : [
+        {
+          "term" : {
+            "labels.priority" : "vip"
+          }
+        },
+        {
+          "term" : {
+            "labels.priority" : "regular"
+          }
+        }
+      ]
+    }
+  }
+}
+
+### create index parents
+PUT http://localhost:9200/parents
+
+### update parents mapping
+PUT http://localhost:9200/parents/_mapping
+Content-Type: application/json
+
+{
+  "properties": {
+    "first_name": {
+      "type": "text"
+    },
+    "last_name": {
+      "type": "text"
+    },
+    "children": {
+      "properties": {
+        "first_name": {
+          "type": "text"
+        },
+        "last_name": {
+          "type": "text"
+        }
+      }
+    }
+  }
+}
+
+### get parents mapping
+GET http://localhost:9200/parents/_mapping
+
+### insert parent aaa
+POST http://localhost:9200/parents/_doc/1
+Content-Type: application/json
+
+{
+  "first_name" : "Aaa",
+  "last_name" : "Bbb",
+  "children" : [
+    {
+      "first_name" : "Ccc",
+      "last_name" : "Ddd"
+    },
+    {
+      "first_name" : "Eee",
+      "last_name" : "Fff"
+    }
+  ]
+}
+
+### get parent 1
+GET http://localhost:9200/parents/_doc/1
+
+### search children
+POST http://localhost:9200/parents/_search
+Content-Type: application/json
+
+{
+  "query" : {
+    "bool" : {
+      "must": [
+        {
+          "match": {
+            "children.first_name" : "Ccc"
+          }
+        },
+        {
+          "match": {
+            "children.last_name" : "Fff"
+          }
+        }
+      ]
+    }
+  }
+}
+
+### delete parents index
+DELETE http://localhost:9200/parents
+
+### create index parents
+PUT http://localhost:9200/parents
+
+### update parents mapping
+PUT http://localhost:9200/parents/_mapping
+Content-Type: application/json
+
+{
+  "properties": {
+    "first_name": {
+      "type": "text"
+    },
+    "last_name": {
+      "type": "text"
+    },
+    "children": {
+      "type": "nested",
+      "properties": {
+        "first_name": {
+          "type": "text"
+        },
+        "last_name": {
+          "type": "text"
+        }
+      }
+    }
+  }
+}
+
+### get parents mapping
+GET http://localhost:9200/parents/_mapping
+
+### insert parent aaa
+POST http://localhost:9200/parents/_doc/1
+Content-Type: application/json
+
+{
+  "first_name" : "Aaa",
+  "last_name" : "Bbb",
+  "children" : [
+    {
+      "first_name" : "Ccc",
+      "last_name" : "Ddd"
+    },
+    {
+      "first_name" : "Eee",
+      "last_name" : "Fff"
+    }
+  ]
+}
+
+### search children
+POST http://localhost:9200/parents/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "nested": {
+      "path": "children",
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "children.first_name": "Eee"
+              }
+            },
+            {
+              "match": {
+                "children.last_name": "Fff"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+### create index category
+PUT http://localhost:9200/categories
+
+### update category mapping
+PUT http://localhost:9200/categories/_mapping
+Content-Type: application/json
+
+{
+  "properties" : {
+    "name": {
+      "type": "text",
+      "fields": {
+        "raw" : {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}
+
+### get categories mapping
+GET http://localhost:9200/categories/_mapping
+
+### inser categories
+POST http://localhost:9200/categories/_doc/1
+Content-Type: application/json
+
+{
+  "name" : "Laptop Murah"
+}
+
+### search categories
+POST http://localhost:9200/categories/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "match" : {
+      "name" : "laptop"
+    }
+  },
+  "sort": [
+    {
+      "name.raw" : {
+        "order": "asc"
+      }
+    }
+  ]
+}
+
+### search categories
+POST http://localhost:9200/categories/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "match" : {
+      "name.raw" : "Laptop Murah"
+    }
+  }
+}
+
+### update products mapping
+PUT http://localhost:9200/products/_mapping
+Content-Type: application/json
+
+{
+  "properties": {
+    "name": {
+      "type": "text",
+      "fields": {
+        "raw": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}
+
+### get products mapping
+GET http://localhost:9200/products/_mapping
+
+### search products
+POST http://localhost:9200/products/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "match": {
+      "name.raw": "Mie Sedap Soto"
+    }
+  }
+}
+
+### update products by query
+POST http://localhost:9200/products/_update_by_query
+Content-Type: application/json
+
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+### insert salah category
+POST http://localhost:9200/categories/_doc/2
+Content-Type: application/json
+
+{
+  "name": "Salah"
+}
+
+### insert salah category
+POST http://localhost:9200/categories/_doc/3
+Content-Type: application/json
+
+{
+  "name": "Salah Lagi"
+}
+
+###search categories
+POST http://localhost:9200/categories/_search
+
+### delete categories by query
+POST http://localhost:9200/categories/_delete_by_query
+Content-Type: application/json
+
+{
+  "query": {
+    "match": {
+      "name": "salah"
+    }
+  }
+}
+
+### delete all categories
+POST http://localhost:9200/categories/_delete_by_query
+Content-Type: application/json
+
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+### update mapping for categories
+PUT http://localhost:9200/categories/_mapping
+Content-Type: application/json
+
+{
+  "properties": {
+    "id": {
+      "type": "keyword"
+    }
+  }
+}
+
+### bulk insert categories
+POST http://localhost:9200/_bulk
+Content-Type: application/json
+
+< categories.json
+
+### search categories
+POST http://localhost:9200/categories/_search
+Content-Type: application/json
+
+{
+  "size": 100,
+  "from": 0,
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    {
+      "id": {
+        "order": "asc"
+      }
+    }
+  ]
+}
+
+### search categories
+POST http://localhost:9200/categories/_search
+Content-Type: application/json
+
+{
+  "size": 100,
+  "from": 0,
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    {
+      "id": {
+        "order": "asc"
+      }
+    }
+  ],
+  "search_after": [
+    "10357"
+  ]
+}
+
+### Cat API
+GET http://localhost:9200/_cat
+
+### Cat API - Indices
+GET http://localhost:9200/_cat/indices?v
+
+### Cat API - Aliases
+GET http://localhost:9200/_cat/aliases?v
+
+### Cat API - Nodes
+GET http://localhost:9200/_cat/nodes?v
+
+### Create snapshot repository
+PUT http://localhost:9200/_snapshot/first_backup
+Content-Type: application/json
+
+{
+  "type": "fs",
+  "settings": {
+    "location": "first_backup"
+  }
+}
+
+### get snapshot
+GET http://localhost:9200/_snapshot
+
+### create snapshot
+PUT http://localhost:9200/_snapshot/first_backup/snapshot1
+Content-Type: application/json
+
+{
+  "indices": [],
+  "metadata": {
+    "taken_by": "aaa",
+    "taken_because": "backup before upgradring"
+  }
+}
+
+### get snapshot
+GET http://localhost:9200/_snapshot/first_backup/snapshot1
+
+### cat api - get snapshot
+GET http://localhost:9200/_cat/snapshots?v
+
+### delete all categories
+POST http://localhost:9200/categories/_delete_by_query
+Content-Type: application/json
+
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+### search categories
+POST http://localhost:9200/categories/_search
+
+### close index categories
+POST http://localhost:9200/categories/_close
+
+### restore categories
+POST http://localhost:9200/_snapshot/first_backup/snapshot1/_restore
+Content-Type: application/json
+
+{
+  "indices": [
+    "categories"
+  ]
+}
+
+### open index categories
+POST http://localhost:9200/categories/_open
+
+### delete snapshot
+DELETE http://localhost:9200/_snapshot/first_backup/snapshot1
+
+### delete repository
+DELETE http://localhost:9200/_snapshot/first_backup
